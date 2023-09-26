@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Stopwatch</title>
+    <style>
+    body {
+  background-color: rgb(255, 163, 42);
+}
+    h1 { margin-top: 150px;
+         text-align: center;}
+    p { margin-top: 50px;
+         text-align: center;}
+    
+         .container {
+    text-align: center;
+}
+
+.stopwatch {
+    font-size: 30px;
+    margin-top: 50px;
+}
+
+.button-container {
+    margin-top: 10px;
+}
+
+</style>
+</head>
+
+<body>
+    
+    
+    <h1 style="color: rgb(255, 255, 255);">HTML/CSS/JS STOPWATCH</h1>
+
+    <p style="font-size: large; color:rgb(255, 255, 255); font-weight: bold;";> 
+        Press the first button to start the watch,
+        the second to stop and the third to reset.
+    </p>
+    
+    <script>           //js part with the watch functions
+        var startTime; // keeps track of the start time
+        var stopwatchInterval; // keeps track of the interval 
+        var elapsedPausedTime = 0; // keeps track of the elapsed time while stopped
+      
+        function startStopwatch() {
+          if (!stopwatchInterval) {
+            startTime = new Date().getTime() - elapsedPausedTime; // gets starting time
+            stopwatchInterval = setInterval(updateStopwatch, 10); // updates every 100th of a second
+          }
+        }
+      
+        function stopStopwatch() {
+          clearInterval(stopwatchInterval); // stops the interval
+          elapsedPausedTime = new Date().getTime() - startTime; // calculates elapsed paused time
+          stopwatchInterval = null; // resets the interval variable
+        }
+      
+        function resetStopwatch() {
+          stopStopwatch(); // stops the interval
+          elapsedPausedTime = 0; // resets the elapsed paused time variable
+          document.getElementById("stopwatch").innerHTML = "00:00.00"; // resets the display
+        }
+      
+        function updateStopwatch() {
+          var currentTime = new Date().getTime(); // gets current time in milliseconds
+          var elapsedTime = currentTime - startTime; // calculates elapsed time in milliseconds
+          var seconds = Math.floor(elapsedTime / 1000) % 60; // calculates seconds
+          var minutes = Math.floor(elapsedTime / 1000 / 60) % 60; // calculates minutes
+          var hundredths = Math.floor((elapsedTime % 1000) / 10); // calculates hundredths of seconds
+          var displayTime = pad(minutes) + ":" + pad(seconds) + "." + pad(hundredths); // formats display time
+          document.getElementById("stopwatch").innerHTML = displayTime; // updates the display
+        }
+      
+        function pad(number) {
+          // adds a leading zero if the number is less than 10
+          return (number < 10 ? "0" : "") + number;
+        }
+      </script>
+    
+    <div class="container">     
+        <div id="stopwatch" class="stopwatch" style="font-size: 40px; color: rgb(255, 255, 255);">00:00.00</div>
+        <div class="button-container">
+            <button style="background-color:rgb(255, 163, 42);" onclick="startStopwatch()">Start</button>
+            <button style="background-color:rgb(255, 163, 42);" onclick="stopStopwatch()">Stop</button>
+            <button style="background-color:rgb(255, 163, 42);" onclick="resetStopwatch()">Reset</button>
+        </div>
+    </div>
+</body>
